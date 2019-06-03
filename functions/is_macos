@@ -1,0 +1,2 @@
+[[ "$OSTYPE" =~ ^Darwin ]] || return 1
+

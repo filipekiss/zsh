@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+typeset -A plugins;
+
+for f in $(git submodule foreach 'echo $name' --quiet); do
+    local name=${f:h:t}
+    plugins+=($name $f)
+done
+
+for plugin in ${(k)plugins}; do
+    echo "→ Updating $plugin"
+    pushd "${plugins[$plugin]}"
+    command git pull --rebase > /dev/null 2>&1
+    (command git log --color --pretty=oneline --abbrev-commit HEAD@{1} 2>/dev/null) || echo "→ ${plugin} is up-to-date"
+    popd
+done;
+
+

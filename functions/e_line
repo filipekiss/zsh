@@ -1,0 +1,2 @@
+#  vim: set ts=4 sw=4 tw=80 ft=zsh et :
+printf "${4}%b${RESET}${2}%b${RESET}\n" "${3}" "${1}";

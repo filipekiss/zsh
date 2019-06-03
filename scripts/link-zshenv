@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+non_managed_file() {
+    echo "  Since that file is not ours, we won't touch it"
+    echo "  Backup or remove said file and run me again"
+}
+
+copy_zshrc_local() {
+    if [[ ! -f ~/.zshrc.local ]]; then
+        cp "${pwd}/.zshrc.local" ~/.zshrc.local
+    fi
+}
+
+main() {
+    local pwd
+    local zshenv
+    local current_zshenv
+    pwd="$(pwd -LP)"
+    zshenv="${pwd}/.zshenv"
+    current_zshenv="$(readlink -- ~/.zshenv)"
+
+    if [[ -f ~/.zshenv ]]; then
+        if [[ -L ~/.zshenv ]]; then
+            if [[ $zshenv == "$current_zshenv" ]]; then
+                echo "→ ~/.zshenv is already installed. Nothing to do here"
+                copy_zshrc_local
+                exit 0
+            fi
+            echo "→ ~/.zshenv links to ${current_zshenv}"
+            non_managed_file
+            exit 1
+        fi
+        echo "→ There's already a file at ~/.zshenv"
+        non_managed_file
+        exit 1
+    fi
+    ln -nfs "${zshenv}" ~/.zshenv
+    echo "→ ~/.zshenv linked"
+    copy_zshrc_local
+}
+
+main

@@ -1,0 +1,2 @@
+LOG_STATUS_INFO="${LOG_STATUS_INFO:-→}"
+ e_line "$1" "" "${LOG_STATUS_INFO} " "${BLUE}";

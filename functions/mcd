@@ -1,0 +1,6 @@
+#  vim: set ts=4 sw=4 tw=80 ft=zsh et :
+if [ -z $1 ]; then;
+    echo "Usage: mcd <folderName>"
+    return 1
+fi
+mkdir $1 && cd $1

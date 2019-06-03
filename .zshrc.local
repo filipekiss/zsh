@@ -1,0 +1,7 @@
+# vim:ft=zsh:
+
+e_header "Edit Me" "${0:A}"
+export NPM_AUTH_TOKEN=
+export GITHUB_TOKEN=
+export HOMEBREW_GITHUB_API_TOKEN=
+export JIRA_API_TOKEN=

@@ -1,0 +1,2 @@
+LOG_STATUS_ERROR="${LOG_STATUS_ERROR:-✖}"
+ e_line "$1" "${RED}" "${LOG_STATUS_ERROR} " "${RED}";

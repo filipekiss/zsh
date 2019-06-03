@@ -1,0 +1,25 @@
+#  vim: set ts=4 sw=4 tw=80 ft=zsh et :
+print_full_line() {
+    local LABEL="$1"
+        local CLEAR_LABEL=$(echo $LABEL | sed "s,\[[0-9;]*[a-zA-Z],,g")
+        local COLS=$(($2-${#CLEAR_LABEL}-2))
+        local space=$(printf ' %.0s' {1..${COLS}})
+        e_line "┃ ${LABEL} ${space}┃"
+}
+
+
+
+COLS=$(tput cols);
+if [[ ${COLS} -gt 80 ]]; then
+    COLS=80
+fi
+COLS=$((${COLS}-2))
+header=$(printf '━%.0s' {1..${COLS}})
+e_line "┏${header}┓"
+words=($@)
+for word in "${words[@]}"; do
+    print_full_line "${word}" "${COLS}"
+done
+e_line "┗${header}┛"
+
+

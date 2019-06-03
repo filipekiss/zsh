@@ -1,0 +1,2 @@
+LOG_STATUS_SUCCESS="${LOG_STATUS_SUCCESS:-✔}"
+e_line "$1" "${GREEN}" "${LOG_STATUS_SUCCESS} " "${GREEN}";

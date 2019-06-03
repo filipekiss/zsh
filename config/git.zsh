@@ -1,0 +1,3 @@
+export GIT_EDITOR=$EDITOR
+export GIT_MERGE_AUTOEDIT=no
+
