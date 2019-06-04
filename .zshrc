@@ -43,3 +43,9 @@ else
     [[ -z "${GITHUB_USER}" ]] && echo "⚠ GITHUB_USER not set." && _has_unset_config=yes
     [[ ${_has_unset_config:-no} == "yes" ]] && echo "Set the missing configs in ~/.zshrc"
 fi
+# ┌─────────┐
+# │ Profile │
+# └─────────┘
+# Uncomment the line below and start a new shell. Don't forget to uncomment the
+# `zprof` portion on .zshenv
+# zprof

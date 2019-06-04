@@ -29,6 +29,14 @@ make install-plugins
 make update-plugins
 ```
 
+## Speed Profile
+
+To run `zprof` and check for startup times and see what's slowing the startup
+down, uncomment the profile sections at the **start** of `.zshenv` and at the
+**end** of `.zshrc` and, then, start a new shell.
+
+![zprof results](https://user-images.githubusercontent.com/48519/58891436-e2e5d000-86c2-11e9-98a6-47982fa3bc8d.jpg)
+
 ## Related
 
 - [Dotfiles](http://github.com/filipekiss/dotfiles) - My Dotfiles repository

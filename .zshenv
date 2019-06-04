@@ -1,3 +1,9 @@
+# ┌─────────┐
+# │ Profile │
+# └─────────┘
+# Uncomment the line below and start a new shell. Don't forget to uncomment the
+# `zprof` on .zshrc
+# zmodload zsh/zprof
 # ┌───────────────────────────┐
 # │ Environment configuration │
 # └───────────────────────────┘
