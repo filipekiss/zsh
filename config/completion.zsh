@@ -87,3 +87,6 @@ zstyle ':completion:*:history-words' menu yes
 # ignore multiple entries.
 zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
 zstyle ':completion:*:rm:*' file-patterns '*:all-files'
+
+# ignore specific files when autocompleting for specific commands
+zstyle ':completion:*:*:(nvim|vim|e):*' file-patterns '^(package-lock.json|yarn.lock):source-files' '*:all-files'        #...package-lock.json and yarn.lock
