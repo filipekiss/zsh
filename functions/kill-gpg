@@ -1,0 +1,4 @@
+$commands[pkill] -9 gpg-agent
+$commands[gpgconf] --launch gpg-agent
+return $?
+
