@@ -79,6 +79,7 @@ path=(
     typeset -A zplugins
     zplugins=(
         f-sy-h          fast-syntax-highlighting.plugin.zsh
+        nvm             zsh-nvm.plugin.zsh
         zsh-completions zsh-completions.plugin.zsh
         z.lua           z.lua.plugin.zsh
         fz              fz.plugin.zsh
