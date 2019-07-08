@@ -68,6 +68,12 @@ path=(
     $path
 )
 
+# ┌─────┐
+# │ NVM │
+# └─────┘
+#
+# This is here because it needs to be set before NVM is loaded
+NVM_LAZY_LOAD=true
 # ┌─────────┐
 # │ Plugins │
 # └─────────┘
