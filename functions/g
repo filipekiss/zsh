@@ -23,7 +23,15 @@ last_commit_info() {
 
 if [[ $# -eq 0 ]]; then
     last_commit_info
-    ${aliases[git]:-git} status --short --branch 2>/dev/null || e_header "Not a git repository"
+    if (( $status )); then
+        e_header "Not a git repository"
+        return 0
+    fi
+    if (( $+commands[git-st] )); then
+        $commands[git-st]
+    else
+        ${aliases[git]:-git} status --short --branch 2>/dev/null
+    fi
 else
     ${aliases[git]:-git} "$@"
 fi
