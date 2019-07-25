@@ -57,6 +57,13 @@ bindkey '^r' history-incremental-search-backward
 # Remove ^G (list-expand) so we can use our fzf-widgets
 bindkey -r '^G'
 
+# History Substring Configuration - https://github.com/zsh-users/zsh-history-substring-search#usage
+bindkey "${key_info[Up]}" history-substring-search-up
+bindkey '${key_info[Down]}' history-substring-search-down
+# Also works in vicmd
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
 # Clear
 bindkey "${key_info[Control]}L" clear-screen
 

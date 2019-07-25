@@ -83,11 +83,12 @@ NVM_LAZY_LOAD=true
     setopt EXTENDED_GLOB
     typeset -A zplugins
     zplugins=(
-        f-sy-h          fast-syntax-highlighting.plugin.zsh
-        nvm             zsh-nvm.plugin.zsh
-        zsh-completions zsh-completions.plugin.zsh
-        z.lua           z.lua.plugin.zsh
-        fz              fz.plugin.zsh
+        f-sy-h            fast-syntax-highlighting.plugin.zsh
+        history-substring zsh-history-substring-search.zsh
+        nvm               zsh-nvm.plugin.zsh
+        zsh-completions   zsh-completions.plugin.zsh
+        z.lua             z.lua.plugin.zsh
+        fz                fz.plugin.zsh
     )
     for plugin file in ${(kv)zplugins}; do
         plugin_path=${ZDOTDIR:-$HOME}/plugins/${plugin}/${file}
