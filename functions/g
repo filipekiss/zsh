@@ -15,22 +15,16 @@ last_commit_info() {
     GIT_INFO_MESSAGE=$(echo $GIT_LAST_COMMIT_INFO | cut -d '|' -f2)
     GIT_INFO_TIME=$(echo $GIT_LAST_COMMIT_INFO | cut -d '|' -f3)
     [[ -n $GIT_INFO_MESSAGE ]] && \
-        e_header "Last Commit Info ${GIT_INFO_HASH}" "${GIT_INFO_MESSAGE}" "${GIT_INFO_TIME}" && \
-    return 0
-    return 1
+        e_header "Last Commit Info ${GIT_INFO_HASH}" "${GIT_INFO_MESSAGE}" "${GIT_INFO_TIME}"
 }
 
 
 if [[ $# -eq 0 ]]; then
     last_commit_info
-    if (( $status )); then
-        e_header "Not a git repository"
-        return 0
-    fi
     if (( $+commands[git-st] )); then
-        $commands[git-st]
+        $commands[git-st] 2>/dev/null || e_header "Not in a git repository"
     else
-        ${aliases[git]:-git} status --short --branch 2>/dev/null
+        ${aliases[git]:-git} status --short --branch 2>/dev/null || e_header "Not in a git repository"
     fi
 else
     ${aliases[git]:-git} "$@"
