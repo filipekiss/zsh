@@ -6,8 +6,10 @@ unalias gas 2>/dev/null
 alias   gas="git rebase --interactive --autosquash"
 unalias gbr 2> /dev/null
 alias   gbr="git branch"
-unalias gbc 2> /dev/null
+unalias gcb 2> /dev/null
 ealias  gcb="git checkout -b"
+unalias gct 2> /dev/null
+ealias  gct="git checkout -t"
 unalias gci 2> /dev/null
 ealias  gci="git commit"
 unalias gco 2> /dev/null
