@@ -94,6 +94,11 @@ if [[ ! -d "${PROJECTS}" ]]; then
     mkdir -p ${PROJECTS}
 fi
 
+if [[ ! -d "${NOTE_DIR}" ]]; then
+    export NOTE_DIR="${NOTE_DIR:-$HOME/notes}"
+    mkdir -p ${NOTE_DIR}
+fi
+
 # Better spell checking & auto correction prompt
 export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]? "
 
