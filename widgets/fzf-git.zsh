@@ -8,7 +8,7 @@ function fzf_gg() {
   is_in_git_repo || return
   git -c color.status=always status --short |
   fzf-down -m --ansi --select-1 --exit-0 --nth 2..,.. \
-    --preview-window up:50%:wrap \
+    --preview-window down:50%:wrap \
     --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1}) | head -500' |
   cut -c4- | sed 's/.* -> //'
 }
@@ -17,7 +17,7 @@ function fzf_gu() {
   is_in_git_repo || return
   git ls-files -u | awk '{print $4}' | sort -u |
   fzf-down -m --ansi --select-1 --exit-0 --nth 2..,.. \
-    --preview-window up:50%:wrap \
+    --preview-window down:50%:wrap \
     --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1}) | head -500' |
    sed 's/.* -> //'
 }
@@ -27,7 +27,7 @@ function fzf_gb() {
   branches=$(git for-each-ref --sort=committerdate refs/heads --format='%(refname:short) (last activity: %(color:green)%(committerdate:relative)%(color:reset))')
   echo $branches |
   fzf-down --ansi --multi --tac --preview-window right:60% \
-    --preview-window up:50%:wrap \
+    --preview-window down:50%:wrap \
     --preview 'git log --color=always --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" $(echo {} | cut -d" " -f1)' |
   cut -d' ' -f1
 }
@@ -37,7 +37,7 @@ function fzf_gf() {
   branches=$(git for-each-ref --sort=committerdate refs/remotes --format='%(refname:short) (last activity: %(color:green)%(committerdate:relative)%(color:reset))')
   echo $branches |
   fzf-down --ansi --multi --tac --preview-window right:60% \
-    --preview-window up:50%:wrap \
+    --preview-window down:50%:wrap \
     --preview 'git log --color=always --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" $(echo {} | cut -d" " -f1)' |
   cut -d' ' -f1
 }
@@ -46,7 +46,7 @@ function fzf_gt() {
   is_in_git_repo || return
   git tag --sort -version:refname |
   fzf-down --multi --preview-window right:70% \
-    --preview-window up:50%:wrap \
+    --preview-window down:50%:wrap \
     --preview 'git show --color=always {} | head -200'
 }
 # Git commit hashes
@@ -56,7 +56,7 @@ function fzf_gh() {
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always "${currentBranch}" |
   fzf-down --ansi --no-sort --reverse --multi --bind 'ctrl-s:toggle-sort' \
     --header 'Press CTRL-S to toggle sort' \
-    --preview-window up:50%:wrap \
+    --preview-window down:50%:wrap \
     --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | xargs git show --color=always | head -200' |
   grep -o "[a-f0-9]\{7,\}"
 }
@@ -77,7 +77,7 @@ function fzf-gs-widget() {
   while out=$(
     git stash list --pretty="%C(yellow)%gd %C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs" |
     fzf-down --ansi --no-sort --query="$q" --print-query \
-        --preview-window up:50%:wrap \
+        --preview-window down:50%:wrap \
         --header "Ctrl-a: apply stash | Ctrl-d: diff | Ctrl-b: create branch | Ctrl-s: drop | Ctrl-p: Pop" \
         --preview "echo {} | grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git stash show --color=always % | head -200 '" \
         --expect=ctrl-d,ctrl-b,ctrl-s,ctrl-a,ctrl-p);
