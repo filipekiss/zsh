@@ -16,6 +16,7 @@ alias rsync="${aliases[rsync]:-rsync} -rpltDv --filter=':- .gitignore'"
 alias type="${aliases[type]:-type} -a"
 alias dots="cd ${DOTFILES:-${HOME}/.dotfiles}"
 alias getPath='echo $PATH | tr -s ":" "\n"'
+alias groot='cd $(git rev-parse --show-toplevel || echo $HOME)'
 
 # ┌──────────────────────┐
 # │ Ranger file explorer │
