@@ -24,6 +24,9 @@ _mx_util_pane_title() {
         --clear)
             _clear="yes"
             ;;
+        --clear-all)
+            _clear_all="yes"
+            ;;
         --separator=*)
             _separator=$(echo "$arg" | cut -d '=' -f2)
             ;;
@@ -36,6 +39,7 @@ _mx_util_pane_title() {
         esac
         shift
     done
+    [[ -n "${_clear_all}" ]] && rm -rf /tmp/tmux-pane-info/* >/dev/null && return 0
     [[ -z ${_tty} ]] && _tty=$(tmux display-message -p "#{pane_tty}")
     _pane_id=${_tty//\//_}
     _pane_info_file="${pane_info_location}/${_pane_id}"

@@ -15,33 +15,71 @@
 # --------------------------------------------------------------------------------------------------
 
 _mx() {
-    local curcontext="$curcontext" state line
+    local state line args
     typeset -A opt_args
 
-    _arguments \
-        ':Project Namespace:->namespace'\
-        ':Project:->project'
+    # command options
+    args=(
+        "--no-focus[Do not attach/swtich to session]"
+        "--pwd=[Specify the folder to be used for the session]: :_files -/"
+    )
+
+    #
+    args+=(
+    "(-): :->namespace-or-external"
+    "(-)*:: :->project-or-options"
+    )
+
+    _arguments -C $args
 
     case $state in
-        (namespace)
-            _arguments '1:Project Namespace:__zsh_complete_namespace'
+        (namespace-or-external)
+            __mx_namespace
+            __mx_get_subcommands
             ;;
-        (project)
-            _arguments '2:Project:__zsh_complete_project'
+        (project-or-options)
+            __mx_projects
+            ;;
     esac
 }
 
-__zsh_complete_namespace() {
+__mx_get_subcommands() {
+    local namespaces
+    typeset -a _description
+    _all_cmds=(${(k)commands[(I)(#i)mx-*]})
+    _description '' expl '' # get applicable matchers
+    compadd "$expl[@]" -O allmatching -a _all_cmds
+    len=${#${(O)allmatching//?/.}[1]} # length of longest match
+    sep="--"
+    for command in ${_all_cmds[@]}; do
+        _local_command="${command/mx-/}"
+        commands_m+=("${_local_command}")
+        commands_d+=("${(r.len-3.)_local_command} -- External Command")
+    done;
+    alts+=("external-commands:External Commands:compadd -ld commands_d -a commands_m")
+    _alternative $alts
+}
+
+__mx_namespace() {
     local namespaces
     [[ -n $DOTFILES ]] && _description=("dotfiles:$DOTFILES") || typeset -a _description
     _description+=($(_list_available_namespaces))
-    _describe -t namespace "Project Namespace" _description
+    _describe -t namespace "Namespaces" _description && ret=0
+    return $ret
 }
 
-__zsh_complete_project() {
-    [[ $words[2] == "dotfiles" ]] && return 0
-    _description=("${(@f)$(_list_available_projects $words[2])}")
-    _describe -t project "Listing projects | ${words[2]}" _description
+__mx_projects() {
+    local command=$words[1]
+    local completion_func="_mx_${command//-/_}"
+    if [[ -n  ${(k)functions[(I)(#i)${completion_func}]} ]]; then
+        _is_external="yes"
+        _call_function ret "${completion_func}" && return ret
+    else
+        [[ $words[1] == "dotfiles" ]] && return 0
+        _description=("${(@f)$(_list_available_projects $words[1])}")
+        _describe -t project "Listing projects | ${words[1]}" _description && ret=0
+    fi
+    return $ret
 }
 
 
@@ -114,7 +152,7 @@ _list_available_projects() {
     for project in $_projects_available; do
         _session_description="${project/#${HOME}/~}"
         if tmux has-session -t "${_selected_namespace}/${project:t}" > /dev/null 2>&1; then
-            _session_description="→ Go to session"
+            _session_description="→ Go to session ${_selected_namespace}/${project:t}"
         fi
         echo "${project:t}:${_session_description}"
     done;

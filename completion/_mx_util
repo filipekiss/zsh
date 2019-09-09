@@ -1,0 +1,64 @@
+#compdef mx-util
+
+# vim:ft=zsh:
+
+# Authors
+# -------
+# Filipe Kiss <eu@filipekiss.com.br> http://github.com/filipekiss
+# --------------------------------------------------------------------------------------------------
+
+_mx_util() {
+    local state line args curcontext
+    typeset -A opt_args
+
+
+    args+=(
+        ": :->command"
+        "*:: :->option-or-argument"
+    )
+
+    _arguments -C $args
+
+    case $state in
+        (command)
+            _mx_util_commands
+            ;;
+        (option-or-argument)
+            _mx_util_option_argument
+            ;;
+    esac
+}
+
+_mx_util_commands() {
+    _mx_util_commands_list=(
+    "resize:Resize the pane to the desired size"
+    "pane-title:Set or display custom pane title"
+    )
+    _describe -t mx-util-commands "commands" _mx_util_commands_list
+}
+
+_mx_util_option_argument() {
+    local subcommand="$words[1]"
+    case $subcommand in
+        (pane-title)
+            args=(
+            '(--tty --title --clear --clear-all)--tty=[The tty identifier for the current pane]'
+            '(--separator --title --clear --clear-all)--separator=[The string to be used as separator - default: ─]'
+            '(--tty --separator --title --clear --clear-all)--title=[Set the pane title]'
+            '(--tty --separator --title --clear --clear-all)--clear[Clear current pane title]'
+            '(--tty --separator --title --clear --clear-all)--clear-all[Clear all custom titles]'
+            )
+            ;;
+        (resize)
+            args=(
+            '(-x)-y[Resize vertically]'
+            '(-y)-x[Resize horizontally]'
+            ': :_guard "^-*" size'
+            )
+            ;;
+    esac
+    _arguments -C -s -S : $args && ret=0
+    return $ret
+}
+
+_mx_util "$@"
