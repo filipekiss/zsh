@@ -54,11 +54,12 @@ manpath=(
 path=(
     ./bin(N-/)
     ./node_modules/.bin
-    ${ZDOTDIR}/bin
+    ${ZDOTDIR}/bin(N-/)
+    ${HOME}/.bin/local(N-/)
     ${HOME}/.bin(N-/)
     ${HOME}/.cargo/bin(N-/)
     ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin(N-/)
-    ${HOMEBREW_ROOT:-/usr/local/}{bin,sbin}
+    ${HOMEBREW_ROOT:-/usr/local/}{bin,sbin}(N-/)
     ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin(N-/)
     ${HOMEBREW_ROOT:-/usr/local}/opt/findutils/libexec/gnubin(N-/)
     ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)

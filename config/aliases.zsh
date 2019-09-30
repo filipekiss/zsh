@@ -10,7 +10,6 @@ alias la="${aliases[la]:-ls} -la"
 alias mkdir="${aliases[mkdir]:-mkdir} -p"
 alias mv="${aliases[mv]:-mv} -iv"
 alias ping="${aliases[ping]:-ping} -c 4"
-alias pubkey='cat $HOME/.ssh/id_rsa.pub'
 alias rm="${aliases[rm]:-rm} -i"
 alias rsync="${aliases[rsync]:-rsync} -rpltDv --filter=':- .gitignore'"
 alias type="${aliases[type]:-type} -a"
@@ -65,7 +64,9 @@ alias du='du -kh'
 # │ Global Aliases  │
 # └─────────────────┘
 alias -g C='| pbcopy'
-if (( $+commands[rg] )); then
+if (( $+commands[batgrep] )); then
+    alias -g G='| batgrep'
+elif (( $+commands[rg] )); then
     alias -g G='| rg'
 else
     alias -g G='|grep -i '

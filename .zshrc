@@ -1,7 +1,7 @@
 # ┌──────┐
 # │ FZF  │
 # └──────┘
-FZF_CMD='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
+FZF_CMD='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude ".git" --exclude "node_modules/*" --exclude "tags"'
 export FZF_DEFAULT_OPTS='--min-height 30 --bind esc:cancel --height 50% --reverse --tabstop 2 --multi --preview-window wrap --cycle'
 export FZF_DEFAULT_COMMAND="$FZF_CMD --type f"
 export FZF_CTRL_T_COMMAND="$FZF_CMD"
