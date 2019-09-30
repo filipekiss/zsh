@@ -109,6 +109,7 @@ export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un
 # Set nvim as editor or use vim if nvim is not available
 (( $+commands[nvim] )) && export EDITOR=nvim || export EDITOR=vim
 export VISUAL=$EDITOR
+export NOTES_EDITOR=$EDITOR
 
 # Set less or more as the default pager.
 if (( ${+commands[less]} )); then
