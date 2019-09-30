@@ -1,4 +1,4 @@
-# Kiss' ZSH Files
+# Kizsh
 
 > My zsh configuration
 
@@ -7,8 +7,8 @@
 **1. Clone the repository**
 
 ```sh
-git clone --recursive https://github.com/filipekiss/zsh ~/zshfiles
-cd ~/zshfiles
+git clone --recursive https://github.com/filipekiss/zsh ~/.zdotdir
+cd ~/.zdotdir
 ```
 
 **2. Link required folders**
@@ -39,10 +39,12 @@ down, uncomment the profile sections at the **start** of `.zshenv` and at the
 
 ## Related
 
-- [Dotfiles](http://github.com/filipekiss/dotfiles) - My Dotfiles repository
+-   [Dotfiles](http://github.com/filipekiss/dotfiles) - My Dotfiles repository
+-   [Vim](https://github.com/filipekiss/vim) - My Vimfiles repository
 
 **filipekiss/zsh** © 2019+, Filipe Kiss Released under the [MIT] License.<br>
-Authored and maintained by Filipe Kiss with help from contributors ([list][contributors]).
+Authored and maintained by Filipe Kiss with help from contributors
+([list][contributors]).
 
 > GitHub [@filipekiss](https://github.com/filipekiss) &nbsp;&middot;&nbsp;
 > Twitter [@filipekiss](https://twitter.com/filipekiss)
