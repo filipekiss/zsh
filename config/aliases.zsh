@@ -16,6 +16,7 @@ alias type="${aliases[type]:-type} -a"
 alias dots="cd ${DOTFILES:-${HOME}/.dotfiles}"
 alias getPath='echo $PATH | tr -s ":" "\n"'
 alias groot='cd $(git rev-parse --show-toplevel || echo $HOME)'
+alias shutdown='sudo shutdown'
 
 # ┌──────────────────────┐
 # │ Ranger file explorer │
@@ -64,9 +65,8 @@ alias du='du -kh'
 # │ Global Aliases  │
 # └─────────────────┘
 alias -g C='| pbcopy'
-if (( $+commands[batgrep] )); then
-    alias -g G='| batgrep'
-elif (( $+commands[rg] )); then
+
+if (( $+commands[rg] )); then
     alias -g G='| rg'
 else
     alias -g G='|grep -i '

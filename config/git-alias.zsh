@@ -3,9 +3,9 @@
 unalias gap 2> /dev/null
 alias   gap="git add -p"
 unalias gas 2>/dev/null
-alias   gas="git rebase --interactive --autosquash"
+ealias   gas="git rebase --interactive --autosquash"
 unalias gbr 2> /dev/null
-alias   gbr="git branch"
+ealias   gbr="git branch"
 unalias gcb 2> /dev/null
 ealias  gcb="git checkout -b"
 unalias gct 2> /dev/null
@@ -23,10 +23,10 @@ alias   gph="git push -u origin HEAD"
 unalias gpf 2> /dev/null
 ealias  gpf="git push --force-with-lease"
 unalias gpr 2> /dev/null
-alias   gpr="git pull --rebase"
+ealias   gpr="git pull --rebase"
 unalias gps 2> /dev/null
-alias   gps="git push"
+ealias   gps="git push"
 unalias gri 2> /dev/null
-alias   gri="git rebase --interactive"
+ealias   gri="git rebase --interactive"
 unalias gst 2> /dev/null
-alias   gst="git status --short"
+ealias   gst="git status --short"
