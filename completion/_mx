@@ -34,6 +34,7 @@ _mx() {
 
     case $state in
         (namespace-or-external)
+            __mx_sessions
             __mx_namespace
             __mx_get_subcommands
             ;;
@@ -60,8 +61,18 @@ __mx_get_subcommands() {
     _alternative $alts
 }
 
+__mx_sessions() {
+    local sessions _description
+    _description=()
+    _description+=("$(tmux list-sessions -F '#{session_name}:→ Go to session #{session_name}' 2>/dev/null)")
+    [[ -z $_description ]] && return 0
+    _describe -t sessions "Open Sessions" _description && ret=0
+    return $ret
+}
+
 __mx_namespace() {
-    local namespaces
+    local namespaces _description
+    _description=()
     [[ -n $DOTFILES ]] && _description=("dotfiles:$DOTFILES") || typeset -a _description
     _description+=($(_list_available_namespaces))
     _describe -t namespace "Namespaces" _description && ret=0

@@ -187,7 +187,7 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
             SPLIT_ARGS="-h -p 50"
         fi
 
-        tmux send-keys -t "$SESSION" "$EDITOR" C-m
+        tmux send-keys -t "$SESSION" "e" C-m
         if [[ -n $SPLIT_ARGS ]]; then
             tmux split-window $SPLIT_ARGS -c "$WORKINGDIR" -t "$SESSION"
         fi
