@@ -64,7 +64,7 @@ __mx_get_subcommands() {
 __mx_sessions() {
     local sessions _description
     _description=()
-    _description+=("$(tmux list-sessions -F '#{session_name}:→ Go to session #{session_name}' 2>/dev/null)")
+    _description=("${(@f)$(_list_available_sessions)}")
     [[ -z $_description ]] && return 0
     _describe -t sessions "Open Sessions" _description && ret=0
     return $ret
@@ -126,6 +126,19 @@ __fzf_complete_mx_project(){
         _list_available_projects "$2" |
             cut -d ':' -f1
     )
+}
+
+_list_available_sessions() {
+    _description=()
+    _sessions=(${(f)"$(tmux list-sessions -F '#{session_name}' 2>/dev/null)"})
+    if [[ -n "$TMUX" ]]; then
+        local current_session
+        current_session=$(tmux display-message -p '#S')
+    fi
+    for session in $_sessions; do
+        [[ $session != \_* ]] && [[ $session != ${current_session:-} ]] && _description+=("${session}:→ Go to session ${session}")
+    done;
+    echo ${(iF)_description}
 }
 
 _list_available_namespaces() {
