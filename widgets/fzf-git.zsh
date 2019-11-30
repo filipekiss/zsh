@@ -3,15 +3,33 @@
 function is_in_git_repo() {
   git rev-parse HEAD > /dev/null 2>&1
 }
-# Show git modified files
+# Show git modified files (or all files if none was modified)
 function fzf_gg() {
   is_in_git_repo || return
-  git -c color.status=always status --short |
-  fzf-down -m --ansi --select-1 --exit-0 --nth 2..,.. \
+  modified_files=$(git -c color.status=always status --short)
+  if [[ -n $modified_files ]]; then
+git -c color.status=always status --short | fzf-down -m --ansi --select-1 --exit-0 --nth 2..,.. \
     --preview-window down:50%:wrap \
     --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1}) | head -500' |
   cut -c4- | sed 's/.* -> //'
+  return
+  fi
+  git ls-files | awk '{print $4}' | sort -u |
+  fzf-down -m --ansi --select-1 --exit-0 --nth 2..,.. \
+    --preview-window down:50%:wrap \
+    --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1}) | head -500' |
+   sed 's/.* -> //'
 }
+# Show git files
+function fzf_gv() {
+  is_in_git_repo || return
+  git ls-files | 
+  fzf-down -m --ansi --select-1 --exit-0 --nth 2..,.. \
+    --preview-window down:50%:wrap \
+    --preview 'bat --color always --style=header,grid --line-range :300 --terminal-width=-4 {}' |
+   sed 's/.* -> //'
+}
+
 # Show git conflicted files
 function fzf_gu() {
   is_in_git_repo || return
@@ -124,7 +142,7 @@ function bind-git-helper() {
   done
 }
 
-bind-git-helper g b t r h f u
+bind-git-helper g b t r h f u v
 unset -f bind-git-helper
 # Stash helper works kinda different, so he needs it's own binding rule
 zle -N fzf-gs-widget
