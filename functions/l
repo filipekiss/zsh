@@ -1,20 +1,31 @@
 #  vim: set ts=4 sw=4 tw=80 ft=zsh et :
 unalias l 2> /dev/null
 
-if [[ $# -eq 1 && -f $1 ]]; then
+if [[ $# -eq 1 && -L $1 ]]; then
+    desired_path=$(readlink -f "$1" )
+    autoload -Uz is_tty
+    if [[ ! -f $desired_path ]] && is_tty; then
+        echo "$1 → $desired_path"
+    fi
+fi
+
+desired_path="${filename:-$1}"
+
+if [[ $# -eq 1 && -f $desired_path ]]; then
     if (( $+commands[bat] )); then
-        bat "$1"
+        bat "$desired_path"
     else
-        less "$1"
+        less "$desired_path"
     fi
     return
 fi
-if (( $+commands[exa] )); then
+
+if (( $+commands[lsd] )); then
     if [[ "$1" == '--help' ]]; then
-        exa --help
+        lsd --help
     else
         # --all --long --group --header --links|-H --classify|-F --color-scale --group-directories-first --sort=type
-        exa -alghHF --color-scale --group-directories-first --sort=type "$@"
+        lsd --group-dirs="first" --long --almost-all --classify --size short "$@"
     fi
 else
     # https://github.com/paulirish/dotfiles/blob/7c46f8c25015c2632894dbe5fea20014ab37fd89/.functions#L14-L25

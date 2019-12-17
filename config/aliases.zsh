@@ -75,8 +75,8 @@ if (( $+commands[xargs] )); then
     alias -g X='| xargs'
 fi
 
-if (( $+commands[exa] )); then
-  alias ll="exa --tree"
+if (( $+commands[lsd] )); then
+  alias ll="lsd --tree"
 elif (( $+commands[tree] )); then
   alias ll="type tree >/dev/null && tree -da -L 1 || l -d .*/ */ "
 else
