@@ -31,6 +31,16 @@ fi
 # └────┘
 export FZ_HISTORY_CD_CMD="_zlua"
 
+#  ┌────────────────────────────────────────────────────────┐
+#  │ Make sure git completions are the good ones            │
+#  │ For reference: https://github.com/github/hub/pull/1962 │
+#  └────────────────────────────────────────────────────────┘
+(
+if [ -e /usr/local/share/zsh/site-functions/_git ]; then
+    command mv -f /usr/local/share/zsh/site-functions/{,disabled.}_git
+fi
+) &!
+
 # ┌────────────────────┐
 # │ Load local configs │
 # └────────────────────┘
