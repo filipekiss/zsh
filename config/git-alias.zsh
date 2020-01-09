@@ -22,6 +22,10 @@ unalias gph 2> /dev/null
 alias   gph="git push -u origin HEAD"
 unalias gpf 2> /dev/null
 ealias  gpf="git push --force-with-lease"
+unalias gpff 2> /dev/null
+ealias  gpff="git push --force-with-lease --no-verify"
+unalias gpfff 2> /dev/null
+ealias  gpfff="git push --force --no-verify"
 unalias gpr 2> /dev/null
 ealias   gpr="git pull --rebase"
 unalias gps 2> /dev/null
