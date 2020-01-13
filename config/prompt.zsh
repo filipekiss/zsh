@@ -1,3 +1,11 @@
+# If starship is installed, use starship:
+if (( $+commands[starship] )); then
+    eval "$(starship init zsh)"
+    return
+fi
+
+#If not, use pure
+
 SYMBOLS=(
     "❯"
     "→"
