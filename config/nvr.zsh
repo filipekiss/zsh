@@ -25,6 +25,6 @@ local __current_session_window=$(tmux display-message -p '#I')
 # Replace slashes on session name to prevent socket creation errors
 __current_tmux_session=${__current_tmux_session//\//-}
 export NVIM_LISTEN_ADDRESS="/tmp/nvimsocket-${__current_tmux_session}-${__current_session_window}"
-export EDITOR="nvr"
+export EDITOR="nvr --remote-tab -s --servername=$NVIM_LISTEN_ADDRESS"
 export VISUAL=$EDITOR
-export GIT_EDITOR="$EDITOR --remote-wait-silent -s --servername=$NVIM_LISTEN_ADDRESS"
+export GIT_EDITOR="nvr --remote-tab-wait-silent -s --servername=$NVIM_LISTEN_ADDRESS"
