@@ -58,7 +58,7 @@ bindkey '^r' history-incremental-search-backward
 bindkey -r '^G'
 
 # History Substring Configuration - https://github.com/zsh-users/zsh-history-substring-search#usage
-bindkey "${key_info[Up]}" history-substring-search-up
+bindkey '${key_info[Up]}' history-substring-search-up
 bindkey '${key_info[Down]}' history-substring-search-down
 # Also works in vicmd
 bindkey -M vicmd 'k' history-substring-search-up
@@ -83,10 +83,10 @@ function nvr-edit-command-line() {
 zle -N nvr-edit-command-line
 bindkey -M vicmd '!'  nvr-edit-command-line
 
-# Automatically expand ... to ../..
+# Automatically expand .... to ../..
 double-dot-expand() {
-  if [[ ${LBUFFER} == *.. ]]; then
-    LBUFFER+='/..'
+  if [[ ${LBUFFER} == *... ]]; then
+    LBUFFER="${LBUFFER%.}/.."
   else
     LBUFFER+='.'
   fi
