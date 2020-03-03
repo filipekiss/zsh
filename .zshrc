@@ -37,7 +37,7 @@ export FZ_HISTORY_CD_CMD="_zlua"
 #  └────────────────────────────────────────────────────────┘
 (
 if [ -e /usr/local/share/zsh/site-functions/_git ]; then
-    command mv -f /usr/local/share/zsh/site-functions/{,disabled.}_git
+    command mv -f /usr/local/share/zsh/site-functions/{,disabled.}_git 2>/dev/null
 fi
 ) &!
 

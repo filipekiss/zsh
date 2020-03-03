@@ -58,22 +58,17 @@ path=(
     ${HOME}/.bin/local(N-/)
     ${HOME}/.bin(N-/)
     ${HOME}/.cargo/bin(N-/)
-    ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin(N-/)
-    ${HOMEBREW_ROOT:-/usr/local/}{bin,sbin}(N-/)
-    ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin(N-/)
-    ${HOMEBREW_ROOT:-/usr/local}/opt/findutils/libexec/gnubin(N-/)
+    ${HOME}/.volta/bin(N-/) # https://volta.sh
     ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)
     ${GOPATH}/bin(N-/)
+    ${HOMEBREW_PREFIX:-/usr/local}/opt/coreutils/libexec/gnubin(N-/)
+    ${HOMEBREW_PREFIX:-/usr/local}/opt/python/libexec/bin(N-/)
+    ${HOMEBREW_PREFIX:-/usr/local}/opt/findutils/libexec/gnubin(N-/)
     $HOME/Library/Python/3.*/bin(Nn[-1]-/)
+    ${HOMEBREW_PREFIX:-/usr/local/}{bin,sbin}(N-/)
     $path
 )
 
-# ┌─────┐
-# │ NVM │
-# └─────┘
-#
-# This is here because it needs to be set before NVM is loaded
-NVM_LAZY_LOAD=true
 # ┌─────────┐
 # │ Plugins │
 # └─────────┘
@@ -86,7 +81,6 @@ NVM_LAZY_LOAD=true
     zplugins=(
         f-sy-h            fast-syntax-highlighting.plugin.zsh
         history-substring zsh-history-substring-search.zsh
-        nvm               zsh-nvm.plugin.zsh
         zsh-completions   zsh-completions.plugin.zsh
         z.lua             z.lua.plugin.zsh
         fz                fz.plugin.zsh
