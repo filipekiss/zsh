@@ -18,9 +18,6 @@
 	path = plugins/z.lua
 	url = https://github.com/skywind3000/z.lua
     ignore=untracked
-[submodule "plugins/nvm"]
-	path = plugins/nvm
-	url = https://github.com/lukechilds/zsh-nvm
 [submodule "plugins/history-substring"]
 	path = plugins/history-substring
 	url = https://github.com/zsh-users/zsh-history-substring-search
