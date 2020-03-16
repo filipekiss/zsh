@@ -130,6 +130,11 @@ __fzf_complete_mx_project(){
 
 _list_available_sessions() {
     _description=()
+    tmux has-session 2>/dev/null
+    _is_tmux_running=$?
+    if [[ ${_is_tmux_running:-1} == 1 ]]; then
+        return
+    fi
     _sessions=(${(f)"$(tmux list-sessions -F '#{session_name}' 2>/dev/null)"})
     if [[ -n "$TMUX" ]]; then
         local current_session
