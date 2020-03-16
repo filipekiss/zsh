@@ -27,6 +27,13 @@ export HOSTNAME=$(hostname)
 export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
 
+
+# ┌──────────────────┐
+# │ Personal details │
+# └──────────────────┘
+export FULLNAME="Filipe Kiss"
+export GITHUB_USERNAME="filipekiss"
+
 # ┌───────────────────────────────────────────────────────────────────────────┐
 # │ Ensure that a non-login, non-interactive shell has a defined environment. │
 # └───────────────────────────────────────────────────────────────────────────┘
