@@ -44,7 +44,7 @@ fpath=(
 # └───────────────────────────────────────────┘
 (( $+commands[manpath] )) && MANPATH="`manpath`"
 manpath=(
-    ${HOMEBREW_ROOT:-/usr/local}/opt/*/libexec/gnuman(N-/)
+    ${HOMEBREW_PREFIX:-/usr/local}/opt/*/libexec/gnuman(N-/)
     "$manpath[@]"
 )
 
