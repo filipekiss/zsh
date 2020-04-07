@@ -1,0 +1,6 @@
+#compdef git-nuke
+#description Delete a branch locally and remotely
+
+_arguments -w -C -s \
+    '*: :__git_branch_names'
+
