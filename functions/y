@@ -6,8 +6,48 @@
 
 unalias y 2>/dev/null
 
+has_package_lock() {
+    command ls $PWD/package-lock.json > /dev/null 2>&1
+    foundPackageLock=$?
+    [[ $foundPackageLock -eq 0 ]] && return 0
+    return 1
+}
+
 if [[ $# -eq 0 ]]; then
+    if has_package_lock; then
+        npm install
+        return
+    fi
     yarn install
 else
-    yarn "$@"
+    if ! has_package_lock; then
+        yarn "$@"
+        return
+    fi
+    case "$1" in
+        "add -D")
+            ;& # fall through the next case
+        "add --dev")
+            shift
+            shift
+            npm install --save-dev "$@"
+            return
+            ;;
+        add)
+            shift
+            npm install "$@"
+            return
+            ;;
+        remove)
+            shift
+            npm uninstall "$@"
+            ;;
+        upgrade)
+            shift
+            npm upgrade "$@"
+            ;;
+        *)
+        echo 'package-lock.json found. use npm isntead.'
+        return
+    esac
 fi
