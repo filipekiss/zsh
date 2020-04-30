@@ -25,4 +25,4 @@ __e_prepare_socket $__socket_name
 # --servername: The current window socket
 # --remote-tab-silent is the same as --remote-tab (use a existing instance but
 # open the file in a new tab), but throws no error if no process is found
-nvr --servername=${__socket_name} --remote-tab-silent -s $@
+nvr --servername=${__socket_name} --remote-silent -s $@
