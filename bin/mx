@@ -76,7 +76,15 @@
 # --------------------------------------------------------------------------------------------------
 
 set -e
-source dotfiles "source"
+
+e_line() {
+    printf "${4}%b${RESET}${2}%b${RESET}\n" "${3}" "${1}"
+}
+
+e_info() {
+    LOG_STATUS_INFO="${LOG_STATUS_INFO:-→}"
+    e_line "$1" "" "${LOG_STATUS_INFO} " "${BLUE}"
+}
 
 _parse_arguments() {
     local arg

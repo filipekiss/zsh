@@ -1,9 +1,3 @@
-# ┌─────────┐
-# │ Profile │
-# └─────────┘
-# Uncomment the line below and start a new shell. Don't forget to uncomment the
-# `zprof` on .zshrc
-# zmodload zsh/zprof
 # ┌───────────────────────────┐
 # │ Environment configuration │
 # └───────────────────────────┘
@@ -33,13 +27,6 @@ export GOPATH="${HOME}/.go"
 # └──────────────────┘
 export FULLNAME="Filipe Kiss"
 export GITHUB_USERNAME="filipekiss"
-
-# ┌───────────────────────────────────────────────────────────────────────────┐
-# │ Ensure that a non-login, non-interactive shell has a defined environment. │
-# └───────────────────────────────────────────────────────────────────────────┘
-if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprofile"
-fi
 
 # ┌─────────────────────────────────┐
 # │ Load .zshenv.local if it exists │
