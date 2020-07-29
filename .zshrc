@@ -91,7 +91,6 @@ path=(
 #
 # The array is used to load the settings in the desired order
 zconfig=(
-    aliases
     cli-format
     completion
     compdefs
@@ -104,8 +103,10 @@ zconfig=(
     hash
     history
     input
-    nvr
     prompt
+    nvr
+    editor
+    aliases
     fzf
     homebrew
     direnv
@@ -125,6 +126,7 @@ export FZ_HISTORY_CD_CMD="_zlua"
 (
 if [ -e /usr/local/share/zsh/site-functions/_git ]; then
     command mv -f /usr/local/share/zsh/site-functions/{,disabled.}_git 2>/dev/null
+    command mv -f /usr/local/share/zsh/site-functions/{,disabled.}git-completion.bash 2>/dev/null
 fi
 ) &!
 
@@ -135,13 +137,5 @@ fi
 if [[ -f ${HOME}/.zshrc.local ]]; then
     source $HOME/.zshrc.local
 fi
-[[ -z "${HOMEBREW_GITHUB_API_TOKEN}" ]] && echo "⚠ HOMEBREW_GITHUB_API_TOKEN not set." && _has_unset_config=yes
-[[ -z "${GITHUB_TOKEN}" ]] && echo "⚠ GITHUB_TOKEN not set." && _has_unset_config=yes
-[[ -z "${GITHUB_USER}" ]] && echo "⚠ GITHUB_USER not set." && _has_unset_config=yes
-[[ ${_has_unset_config:-no} == "yes" ]] && echo "Set the missing configs in ~/.zshrc"
 
-# Single NVIM per session
-if [[ -n $TMUX ]]; then
-    session_id="$(tmux display-message -p "#{window_id}")"
-    export NVIM_LISTEN_ADDRESS="${TMPDIR:-/tmp/}nvim_${USER}_${session_id}"
-fi
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

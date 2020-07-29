@@ -102,28 +102,5 @@ fi
 # Better spell checking & auto correction prompt
 export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]? "
 
-# ┌─────────┐
-# │ Editors │
-# └─────────┘
-
-# Set nvim as editor or use vim if nvim is not available
-(( $+commands[nvim] )) && export EDITOR=nvim || export EDITOR=vim
-export VISUAL=$EDITOR
-export NOTES_EDITOR=$EDITOR
-
-# Set less or more as the default pager.
-if (( ${+commands[less]} )); then
-    export PAGER=less
-else
-    export PAGER=more
-fi
-
-# Set MANPAGER based on $EDITOR
-case $EDITOR in
-    nvim) export MANPAGER="nvim +'set ft=man' -" ;;
-     vim) export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man' -\"" ;;
-       *) export MANPAGER='less' ;;
-esac
-
 # Ensure UID is exported so Docker can use it
 export UID=$UID
