@@ -2,27 +2,29 @@
 function __e_check_socket {
     local __socket_to_validate="$1"
     local __socket_is_valid
-    __socket_netstat=$(netstat -ln | command grep "${__socket_to_validate}")
+    __socket_netstat=$(command netstat -ln | command grep "${__socket_to_validate}")
     [[ -n $__socket_netstat ]] && return 0
     return 1
 }
 
 function __e_prepare_socket() {
     local __socket_name="$1"
+    shift
     if ! __e_check_socket $__socket_name; then
         # The socket $__socket_name is currently invalid. Remove it and let nvr
         # create a new one
         rm -rf $__socket_name
+        nvim $@ && return
     fi
+    # Use nvr to start or send the current received arguments to the current
+    # window nvim instance
+    # Options:
+    # -s: supress the message shown if nvr needs to create the instance
+    # --servername: The current window socket
+    # --remote-tab-silent is the same as --remote-tab (use a existing instance but
+    # open the file in a new tab), but throws no error if no process is found
+    nvr --servername=${__socket_name} --remote-silent -s $@
 }
 
 __socket_name=$NVIM_LISTEN_ADDRESS
-__e_prepare_socket $__socket_name
-# Use nvr to start or send the current received arguments to the current
-# window nvim instance
-# Options:
-# -s: supress the message shown if nvr needs to create the instance
-# --servername: The current window socket
-# --remote-tab-silent is the same as --remote-tab (use a existing instance but
-# open the file in a new tab), but throws no error if no process is found
-nvr --servername=${__socket_name} --remote-silent -s $@
+__e_prepare_socket $__socket_name $@
