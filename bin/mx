@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+
+# vim: set ts=4 sw=4 tw=80 ft=zsh et :
 
 # mx
 # --------------------------------------------------------------------------------------------------
@@ -174,7 +176,7 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
         e_info "Found project at ${HOME}/${NAMESPACE}/$PROJECT_NAME"
         WORKINGDIR="${PROJECTS}/${NAMESPACE}/$PROJECT_NAME"
     else
-        e_info "Using directory: $WORKINGDIR"
+        e_info "Using directory: ${WORKINGDIR:A:t}"
     fi
 
     # Expand possible ~ in variable if user pass --pwd option
