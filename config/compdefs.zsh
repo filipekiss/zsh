@@ -11,3 +11,4 @@ compdef '_files' transfer
 (( $+functions[_open] )) && compdef o=open
 (( $+functions[_yarn] )) && compdef y=yarn
 (( $+functions[_youtube-dl] )) && compdef yt2mp3=youtube-dl
+(( $+commands[mx] )) && compdef '_mx' mx

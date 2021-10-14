@@ -122,7 +122,7 @@ _parse_arguments() {
 
 _try_mx_command() {
     local _try_command="mx-$arg"
-    if [[ -n $(type -p $_try_command) ]]; then
+    if [[ -n $(whence -p $_try_command) ]]; then
         shift
         shift
         exec "$_try_command" "$@"
@@ -192,15 +192,16 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
         # If the total width is larger than 200, set the right column to be 80 columns and the left
         # column will take as many columns as possible
         if [[ $twidth -ge 200 ]]; then
-            SPLIT_ARGS="-h -l 80"
+            MX_SPLIT_ARGS="-h -l 80"
         elif [[ $twidth -ge 120 ]]; then
-            SPLIT_ARGS="-h -p 50"
+            MX_SPLIT_ARGS="-h -l 50%"
         fi
 
         tmux send-keys -t "$SESSION" "e" C-m
-        if [[ -n $SPLIT_ARGS ]]; then
-            tmux split-window $SPLIT_ARGS -c "$WORKINGDIR" -t "$SESSION"
-            tmux send-keys -t "$SESSION" "ssh-add-if-git; clear" C-m
+
+
+        if [[ -n $MX_SPLIT_ARGS ]]; then
+            tmux split-window ${=MX_SPLIT_ARGS} -t "$SESSION"
         fi
         tmux new-window -d -n 'shell' -t "$SESSION" -c $WORKINGDIR
         tmux select-window -t 1

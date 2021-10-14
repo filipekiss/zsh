@@ -28,6 +28,7 @@ fpath=(
 () {
     setopt EXTENDED_GLOB
     autoload -Uz ${ZDOTDIR:-$HOME}/functions/^*.zwc*
+    autoload -Uz ${ZDOTDIR:-$HOME}/completion/^*.zwc*
 }
 
 
