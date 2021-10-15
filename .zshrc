@@ -105,8 +105,8 @@ zconfig=(
     history
     input
     prompt
-    nvr
     editor
+    nvr
     aliases
     fzf
     homebrew
