@@ -81,7 +81,7 @@ __mx_namespace() {
 
 __mx_projects() {
     local command=$words[1]
-    local completion_func="_mx_${command//-/_}"
+    local completion_func="_mx-${command//-/_}"
     if [[ -n  ${(k)functions[(I)(#i)${completion_func}]} ]]; then
         _is_external="yes"
         _call_function ret "${completion_func}" && return ret
