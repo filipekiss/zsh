@@ -34,3 +34,5 @@ unalias gri 2> /dev/null
 ealias   gri="git rebase --interactive"
 unalias gst 2> /dev/null
 ealias   gst="git status --short"
+unalias gsw 2> /dev/null
+ealias gsw="git switch"
