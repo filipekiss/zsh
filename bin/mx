@@ -201,7 +201,7 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
 
 
         if [[ -n $MX_SPLIT_ARGS ]]; then
-            tmux split-window ${=MX_SPLIT_ARGS} -t "$SESSION"
+            tmux split-window ${=MX_SPLIT_ARGS} -t "$SESSION" -c "$WORKINGDIR"
         fi
         tmux new-window -d -n 'shell' -t "$SESSION" -c $WORKINGDIR
         tmux select-window -t 1
