@@ -197,12 +197,11 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
             MX_SPLIT_ARGS="-h -l 50%"
         fi
 
-        tmux send-keys -t "$SESSION" "e" C-m
-
 
         if [[ -n $MX_SPLIT_ARGS ]]; then
-            tmux split-window ${=MX_SPLIT_ARGS} -t "$SESSION" -c "$WORKINGDIR"
+            tmux send-keys "tmux split-window ${MX_SPLIT_ARGS} -t '$SESSION' -c '$WORKINGDIR' -d" C-m
         fi
+        tmux send-keys -t "$SESSION" "e" C-m
         tmux new-window -d -n 'shell' -t "$SESSION" -c $WORKINGDIR
         tmux select-window -t 1
         tmux select-pane -t 1
