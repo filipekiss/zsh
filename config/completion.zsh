@@ -8,7 +8,7 @@ if [[ ${TERM} == 'dumb' ]]; then
 fi
 
 # load and initialize the completion system
-autoload -Uz compinit && compinit -C -d "${ZDOTDIR:-${HOME}}/${zcompdump_file:-.zcompdump}"
+autoload -Uz compinit && compinit -d "${ZDOTDIR:-${HOME}}/${zcompdump_file:-.zcompdump}"
 
 # ┌─────────────┐
 # │ zsh options │
