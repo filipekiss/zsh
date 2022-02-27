@@ -1,4 +1,4 @@
-#compdef mx
+#compdef _mx mx
 
 # vim:ft=zsh:
 
