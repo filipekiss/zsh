@@ -10,12 +10,9 @@ is_macos || return 0
 unalias cask 2> /dev/null
 
 if [[ $# -eq 0 ]]; then
-    brew cask list
+    brew list --cask
 else
-    if [[ "$1" == "search" ]]; then
-        shift
-        brew search --cask $@
-        return 
-    fi
-    brew cask $@
+    local action="$1"
+    shift
+    brew $action --cask $@
 fi
