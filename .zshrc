@@ -21,7 +21,7 @@ fpath=(
     ${ZDOTDIR:-$HOME}/completion(N-/)
     ${ZDOTDIR:-$HOME}/prompt/prompt.zwc(N-)
     ${ZDOTDIR:-$HOME}/prompt/functions(N-/)
-    /usr/local/share/zsh/site-functions(N-/)
+    /opt/homebrew/share/zsh/site-functions(N-/)
     ${fpath}
 )
 
@@ -54,11 +54,12 @@ path=(
     ${HOME}/.volta/bin(N-/) # https://volta.sh
     ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)
     ${GOPATH}/bin(N-/)
-    ${HOMEBREW_PREFIX:-/usr/local}/opt/coreutils/libexec/gnubin(N-/)
-    ${HOMEBREW_PREFIX:-/usr/local}/opt/python/libexec/bin(N-/)
-    ${HOMEBREW_PREFIX:-/usr/local}/opt/findutils/libexec/gnubin(N-/)
+    ${HOMEBREW_PREFIX:-/opt/homebrew}/opt/coreutils/libexec/gnubin(N-/)
+    ${HOMEBREW_PREFIX:-/opt/homebrew}/opt/python/libexec/bin(N-/)
+    ${HOMEBREW_PREFIX:-/opt/homebrew}/opt/findutils/libexec/gnubin(N-/)
+    ${HOMEBREW_PREFIX:-/opt/homebrew}/opt/curl/bin(N-/)
     $HOME/Library/Python/3.*/bin(Nn[-1]-/)
-    ${HOMEBREW_PREFIX:-/usr/local/}{bin,sbin}(N-/)
+    ${HOMEBREW_PREFIX:-/opt/homebrew}/{bin,sbin}(N-/)
     $path
 )
 
