@@ -22,7 +22,7 @@ fi
 
 # Set MANPAGER based on $EDITOR
 case $EDITOR in
-    nvim) export MANPAGER="nvim +'set ft=man' -" ;;
+    nvim) export MANPAGER="nvim -c 'set ft=man | set showtabline=1 | set laststatus=0' +Man!" ;;
      vim) export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man' -\"" ;;
        *) export MANPAGER=$PAGER ;;
 esac
