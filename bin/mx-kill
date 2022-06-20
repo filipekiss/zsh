@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# ks
+# mx-kill
 # --------------------------------------------------------------------------------------------------
 #
 # Description
@@ -20,12 +20,12 @@
 #
 # Usage
 # -----
-# ks <session name>
+# mx-kill <session name>
 # --------------------------------------------------------------------------------------------------
 
-ks() {
+mx_kill() {
     if [[ $# -eq 0 ]]; then
-        echo "USAGE: ks session_name"
+        echo "USAGE: mx-kill session_name"
         exit 0
     fi
     SESSION="$1"
@@ -41,4 +41,4 @@ ks() {
     fi
 }
 
-ks "$@"
+mx_kill "$@"
