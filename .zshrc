@@ -81,7 +81,7 @@ path=(
         fz                fz.plugin.zsh
     )
     for plugin file in ${(kv)zplugins}; do
-        plugin_path=${ZDOTDIR:-$HOME}/plugins/${plugin}/${file}
+        plugin_path=${ZDOTPLUGINS}/${plugin}/${file}
         for file in ${~plugin_path}(N); do
             source ${~file}
         done;
@@ -96,6 +96,7 @@ path=(
 zconfig=(
     cli-format
     completion
+    nx-completion
     compdefs
     directory
     environment

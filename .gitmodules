@@ -21,3 +21,6 @@
 [submodule "plugins/history-substring"]
 	path = plugins/history-substring
 	url = https://github.com/zsh-users/zsh-history-substring-search
+[submodule "plugins/nx-completion"]
+	path = plugins/nx-completion
+	url = git@github.com:jscutlery/nx-completion.git
