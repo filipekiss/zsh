@@ -58,6 +58,7 @@ path=(
     ${HOMEBREW_PREFIX:-/opt/homebrew}/opt/python/libexec/bin(N-/)
     ${HOMEBREW_PREFIX:-/opt/homebrew}/opt/findutils/libexec/gnubin(N-/)
     ${HOMEBREW_PREFIX:-/opt/homebrew}/opt/curl/bin(N-/)
+    ${HOMEBREW_PREFIX:-/opt/homebrew}/opt/openssh/bin(N-/)
     $HOME/Library/Python/3.*/bin(Nn[-1]-/)
     ${HOMEBREW_PREFIX:-/opt/homebrew}/{bin,sbin}(N-/)
     $path
