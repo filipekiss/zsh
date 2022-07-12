@@ -4,3 +4,4 @@
 *.old
 .zcompcache
 .zcalc_history
+.zsh_sessions
