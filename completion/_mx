@@ -55,7 +55,7 @@ __mx_get_subcommands() {
     for command in ${_all_cmds[@]}; do
         _local_command="${command/mx-/}"
         commands_m+=("${_local_command}")
-        commands_d+=("${(r.len-3.)_local_command} -- External Command")
+        commands_d+=("${_local_command} -- External Command")
     done;
     alts+=("external-commands:External Commands:compadd -ld commands_d -a commands_m")
     _alternative $alts
