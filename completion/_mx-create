@@ -1,0 +1,64 @@
+#compdef mx-create
+
+# vim:ft=zsh:
+
+# mx-create completion
+# --------------------------------------------------------------------------------------------------
+
+# Description
+# -----------
+# Used to autocomplete namespaces when creating new projects
+# --------------------------------------------------------------------------------------------------
+# Authors
+# -------
+# Filipe Kiss <eu@filipekiss.com.br> http://github.com/filipekiss
+# --------------------------------------------------------------------------------------------------
+
+_mx_create() {
+    local state line args
+    typeset -A opt_args
+
+    # # command options
+    # args=(
+    #     "--no-focus[Do not attach/swtich to session]"
+    #     "--pwd=[Specify the folder to be used for the session]: :_files -/"
+    # )
+
+    #
+    args=(
+    "(-): :->namespace"
+    '(-): :_guard "^-*" project name'
+    )
+
+    _arguments -C $args
+
+    case $state in
+        (namespace)
+            __mx_namespace
+            ;;
+    esac
+}
+
+__mx_namespace() {
+    local namespaces _description
+    _description=()
+    _description+=($(_list_available_namespaces))
+    _describe -t namespace "Namespaces" _description && ret=0
+    return $ret
+}
+
+_list_available_namespaces() {
+    local home_namespaces project_namespaces _description
+    _description=()
+
+    if [[ -n $PROJECTS ]]; then
+        project_namespaces=($(find ${PROJECTS}/* -maxdepth 0 -type d -not -path '*/\.*' -not -iwholename '*/forks' -printf '%f\n'))
+        for namespace in $project_namespaces; do
+            _description+=("${namespace}:${PROJECTS}/${namespace}")
+        done;
+    fi
+
+    echo ${(iF)_description}
+}
+
+_mx_create "$@"
