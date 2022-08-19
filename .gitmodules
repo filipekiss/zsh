@@ -24,3 +24,6 @@
 [submodule "plugins/nx-completion"]
 	path = plugins/nx-completion
 	url = git@github.com:jscutlery/nx-completion.git
+[submodule "plugins/npm-completion"]
+	path = plugins/npm-completion
+	url = https://github.com/lukechilds/zsh-better-npm-completion

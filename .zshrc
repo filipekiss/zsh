@@ -97,6 +97,7 @@ zconfig=(
     cli-format
     completion
     nx-completion
+    npm-completion
     compdefs
     directory
     environment
