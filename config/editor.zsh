@@ -3,7 +3,9 @@
 # └─────────┘
 
 # Set nvim as editor or use vim if nvim is not available
-if [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
+if [[ $TERM_PROGRAM == "vscode" ]]; then
+  export EDITOR="code"
+elif [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
     (( $+commands[nvr] )) && export EDITOR="nvr -l" || export EDITOR=nvim
 else
     (( $+commands[nvim] )) && export EDITOR=nvim || export EDITOR=vim
