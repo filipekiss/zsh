@@ -105,6 +105,9 @@ _parse_arguments() {
             _pwd=$2
             shift
             ;;
+        -)
+            _namespace="-"
+            ;;
         --* | -*)
             shift
             ;;
@@ -142,6 +145,14 @@ if [[ -z ${_namespace} ]]; then
 else
     SESSION="${_namespace}"
     NAMESPACE="${_namespace}"
+fi
+
+if [[ ${_namespace} == "-" ]]; then
+    if [ -z "$TMUX" ]; then
+        tmux attach
+    else
+        tmux switch-client -l
+    fi
 fi
 
 # tmux 1.9a+ doesn't like .'s in session names
