@@ -4,10 +4,14 @@
 [[ -z $TMUX ]] && alias e=$EDITOR && return 0
 
 # Check if neovim is our editor of choice
-[[ $EDITOR == *"nvim" ]] && __is_editor_nvim="yes"
+[[ $EDITOR == *"nvim"* ]] && __is_editor_nvim="yes"
 
 # If we don't have nvim installed just alias e to $EDITOR and be done with it
 [[ -z $__is_editor_nvim ]] && alias e=$EDITOR && return 0
+
+# If we are in a nested nvim sesion, NVIM_UNCEPTION_PIPE_PATH_HOST will be set,
+# so we don't use nvr and just use the default `$EDITOR` command
+[[ -n $NVIM_UNCEPTION_PIPE_PATH_HOST ]] && alias e="$EDITOR" && return 0
 
 # Check for NVR
 (( $+commands[nvr] )) && __is_nvr_installed="yes"
