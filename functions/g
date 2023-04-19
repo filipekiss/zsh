@@ -22,7 +22,7 @@ last_commit_info() {
 if [[ $# -eq 0 ]]; then
     last_commit_info
     if (( $+commands[git-st] )); then
-        $commands[git-st] 2>/dev/null || e_header "Not in a git repository"
+        $commands[git-st] 2>/dev/null || (e_header "Not in a git repository" && l)
     else
         ${aliases[git]:-git} status --short --branch 2>/dev/null || e_header "Not in a git repository"
     fi
