@@ -113,11 +113,11 @@ for widget (${ZDOTDIR:-$HOME}/widgets/*.zsh) source $widget
 # Ensure no delay when changing modes
 export KEYTIMEOUT=1
 
-########################################################################
+#######################################################################################################
 # Expand aliases
 # http://www.math.cmu.edu/~gautam/sj/blog/20140625-zsh-expand-alias.html
-# https://github.com/ninrod/dotfiles/blob/master/zsh/expand-alias.zsh
-########################################################################
+# https://github.com/ninrod/dotfiles/blob/c78cc190c523f765595c158b2953cdad8d4d07e9/zsh/expand-alias.zsh
+#######################################################################################################
 
 function expand-ealias() {
   if [[ $LBUFFER =~ "(^|[;|&])\s*(${(j:|:)ealiases})\$" ]]; then
@@ -135,3 +135,6 @@ bindkey -M isearch " "      magic-space     # normal space during searches
 
 # FZF Folder Widget
 bindkey '^q' fzf-cd-widget
+
+# Undo using Ctrl _
+bindkey '^_' undo
