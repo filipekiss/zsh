@@ -155,9 +155,16 @@ if [[ ${_namespace} == "-" ]]; then
     fi
 fi
 
+
 # tmux 1.9a+ doesn't like .'s in session names
 SESSION="${SESSION//./}"
-[[ "$SESSION" == *'dotfiles'* || "$PWD" == *'dotfiles'* ]] && SESSION='dotfiles'
+if [[ "$SESSION" == *'dotfiles'* ]]; then
+    SESSION='dotfiles'
+elif [[ "$SESSION" == *'nvim'* ]]; then
+    SESSION='nvim'
+elif [[ "$SESSION" == *'zsh'* ]]; then
+    SESSION='zsh'
+fi
 
 if [[ -n "${_project_name}" && -z $MX_UNIQUE_SESSIONS ]]; then
     PROJECT_NAME="${_project_name}"
@@ -180,6 +187,12 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
     if [[ "$SESSION" == 'dotfiles' && -d "$HOME/.dotfiles" ]]; then
         e_info "Using dotfiles settings"
         WORKINGDIR="${HOME}/.dotfiles"
+    elif [[ "$SESSION" == 'nvim' && -d "$XDG_CONFIG_HOME/nvim" ]]; then
+        e_info "Using nvim settings"
+        WORKINGDIR="${XDG_CONFIG_HOME}/nvim"
+    elif [[ "$SESSION" == 'zsh' && -d "$ZDOTDIR" ]]; then
+        e_info "Using zsh settings"
+        WORKINGDIR="${ZDOTDIR}"
     elif [ -d "${PROJECTS}/forks/${NAMESPACE}/${PROJECT_NAME}" ]; then
         e_info "Found fork at ${PROJECTS}/forks/${NAMESPACE}/${PROJECT_NAME}"
         WORKINGDIR="${PROJECTS}/forks/${NAMESPACE}/${PROJECT_NAME}"
