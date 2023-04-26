@@ -115,6 +115,7 @@ zconfig=(
     fzf
     homebrew
     direnv
+    zoxide
 )
 
 for config (${ZDOTDIR:-$HOME}/config/${^zconfig}.zsh) source $config && unset config
