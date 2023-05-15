@@ -18,17 +18,15 @@ _mx() {
     local state line args
     typeset -A opt_args
 
+args=(
     # command options
-    args=(
-        "--no-focus[Do not attach/swtich to session]"
-        "--pwd=[Specify the folder to be used for the session]: :_files -/"
-    )
-
-    #
-    args+=(
+    "--kill-current-session[Kill current session and move to the new one]"
+    "--no-focus[Do not attach/switch to session]"
+    "--pwd=[Specify the folder to be used for the session]: :_files -/"
+    # command arguments
     "(-): :->namespace-or-external"
     "(-)*:: :->project-or-options"
-    )
+)
 
     _arguments -C $args
 

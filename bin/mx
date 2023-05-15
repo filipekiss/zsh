@@ -95,6 +95,9 @@ _parse_arguments() {
     while (($# > 0)); do
         arg="$1"
         case "$arg" in
+        --kill-current-session | -k)
+            _kill_current_session="yes"
+            ;;
         --no-focus)
             _focus="no"
             ;;
@@ -140,6 +143,16 @@ _use_default_session_name() {
     NAMESPACE="${SESSION}"
 }
 
+_should() {
+    [[ "${1:-yes}" == "yes" ]] && return 0 || return 1
+}
+
+_should_focus_new_session() {
+    _should ${_focus:-"yes"}
+    local should_focus=$?
+    [[ -n $MX_BG || "${should_focus}" -gt 0 ]] && return 1 || return 0
+}
+
 if [[ -z ${_namespace} ]]; then
     _use_default_session_name
 else
@@ -160,11 +173,15 @@ fi
 SESSION="${SESSION//./}"
 if [[ "$SESSION" == *'dotfiles'* ]]; then
     SESSION='dotfiles'
+    NAMESPACE=""
 elif [[ "$SESSION" == *'nvim'* ]]; then
     SESSION='nvim'
+    NAMESPACE=""
 elif [[ "$SESSION" == *'zsh'* ]]; then
     SESSION='zsh'
+    NAMESPACE=""
 fi
+
 
 if [[ -n "${_project_name}" && -z $MX_UNIQUE_SESSIONS ]]; then
     PROJECT_NAME="${_project_name}"
@@ -227,14 +244,25 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
         fi
         tmux send-keys -t "$SESSION" "e" C-m
         tmux new-window -d -n 'shell' -t "$SESSION" -c $WORKINGDIR
-        tmux select-window -t 1
-        tmux select-pane -t 1
+
+        if _should_focus_new_session; then
+            tmux select-window -t 1
+            tmux select-pane -t 1
+        fi
     fi
 fi
 
-if [[ -n $MX_BG || "${_focus:-yes}" == "no" ]]; then
+if ! _should_focus_new_session; then
     exit 0
 fi
+
+if _should ${_kill_current_session:-"no"}; then
+    echo "Kill $SESSION $NAMESPACE"
+    # exec "mx-kill" "$SESSION" "$NAMESPACE"
+    exit 0
+fi
+
+
 
 if [ -z "$TMUX" ]; then
     tmux attach -t "$SESSION"
