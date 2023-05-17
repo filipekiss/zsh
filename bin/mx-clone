@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+
+_parse_arguments() {
+    local arg
+    local arg_idx
+    arg_idx=0
+    while (($# > 0)); do
+        arg="$1"
+        case "$arg" in
+        --no-focus)
+            _focus="no"
+            ;;
+        --pwd=*)
+            _pwd=$(echo "$arg" | cut -d '=' -f2)
+            ;;
+        --pwd)
+            _pwd=$2
+            shift
+            ;;
+        --* | -*)
+            shift
+            ;;
+        *)
+            arg_idx=$((arg_idx + 1))
+            [[ $arg_idx -eq 1 ]] && _namespace="${arg}"
+            [[ $arg_idx -eq 2 ]] && _project_name="${arg}"
+						[[ $arg_idx -eq 3 ]] && _repository_url="${arg}"
+            ;;
+        esac
+        shift
+    done
+    return 0
+}
+
+e_line() {
+    printf "${4}%b${RESET}${2}%b${RESET}\n" "${3}" "${1}"
+}
+
+e_info() {
+    LOG_STATUS_INFO="${LOG_STATUS_INFO:-→}"
+    e_line "$1" "" "${LOG_STATUS_INFO} " "${BLUE}"
+}
+
+e_error() {
+    LOG_STATUS_ERROR="${LOG_STATUS_ERROR:-⛔️}"
+    e_line "$1" "" "${LOG_STATUS_ERROR} " "${RED}"
+}
+
+__usage() {
+  local reason;
+  reason="${1:-}"
+  case "$reason" in
+    namespace|project) 
+      echo "USAGE: mx clone namespace project [url]"
+      echo "Error: $reason is empty"
+    ;;
+    *)
+      echo "USAGE: mx clone namespace project [url]"
+    ;;
+  esac
+  
+}
+
+_build_github_url() {
+	local org="$1"
+	local repo="$2"
+	[[ -z $org || -z $repo ]] && return 1
+	_repository_url="https://github.com/${org}/${repo}"
+}
+
+_mx_clone() {
+    if [[ -z "${PROJECTS:-}" ]]; then
+      e_info 'mx-clone requires the $PROJECT variable to be set'
+      e_line 'The variable should point to where the PROJECTS will be cloned:'
+      e_line 'export PROJECTS="${HOME}/projects"'
+      exit 1
+    fi
+		_parse_arguments "$@"
+    local namespace project
+    namespace="${_namespace}"
+    project="${_project_name}"
+    if [[ -z ${namespace} ]]; then
+      __usage "namespace"
+      exit 1
+    fi
+    if [[ -z ${project} ]]; then
+      __usage "project"
+      exit 1
+    fi
+    
+    if [ -d "${PROJECTS}/${namespace}/${project}" ]; then
+      e_error "Project already exists, refusing to clone"
+			e_line "Use ${BLUE}mx ${namespace} ${project}$RESET to open it"
+			exit 1
+    else
+			# if url is empty, assume it's github and build it
+			if [[ -z ${_repository_url:-} ]]; then
+				_build_github_url ${namespace} ${project}
+			fi
+			e_info "Cloning ${namespace}/${project} ($_repository_url)"
+			command git clone ${_repository_url} ${PROJECTS}/${namespace}/${project}
+			_clone_status=$?
+			[[ ${_clone_status} -eq 0 ]] && exec "mx" "$namespace" "$project" && exit 0
+			e_error "Something went wrong during clone. Check the output above."
+    fi
+
+}
+
+_mx_clone "$@"
+
