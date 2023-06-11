@@ -45,7 +45,8 @@ key_info=(
 # Bind the keys
 
 # Vim mode
-bindkey -v
+# bindkey -v
+bindkey -e
 
 bindkey '^P' up-history
 bindkey '^N' down-history

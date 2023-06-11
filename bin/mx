@@ -95,6 +95,9 @@ _parse_arguments() {
     while (($# > 0)); do
         arg="$1"
         case "$arg" in
+        --editor-only | -e)
+            _editor_only="yes"
+            ;;
         --kill-current-session | -k)
             _kill_current_session="yes"
             ;;
@@ -188,9 +191,38 @@ if [[ -n "${_project_name}" && -z $MX_UNIQUE_SESSIONS ]]; then
     SESSION="${SESSION}/${PROJECT_NAME//./}"
 fi
 
-if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
-    WORKINGDIR="${_pwd:-$PWD}"
 
+WORKINGDIR="${_pwd:-$PWD}"
+
+if [[ "$SESSION" == 'dotfiles' && -d "$HOME/.dotfiles" ]]; then
+    e_info "Using dotfiles settings"
+    WORKINGDIR="${HOME}/.dotfiles"
+elif [[ "$SESSION" == 'nvim' && -d "$XDG_CONFIG_HOME/nvim" ]]; then
+    e_info "Using nvim settings"
+    WORKINGDIR="${XDG_CONFIG_HOME}/nvim"
+elif [[ "$SESSION" == 'zsh' && -d "$ZDOTDIR" ]]; then
+    e_info "Using zsh settings"
+    WORKINGDIR="${ZDOTDIR}"
+elif [ -d "${PROJECTS}/forks/${NAMESPACE}/${PROJECT_NAME}" ]; then
+    e_info "Found fork at ${PROJECTS}/forks/${NAMESPACE}/${PROJECT_NAME}"
+    WORKINGDIR="${PROJECTS}/forks/${NAMESPACE}/${PROJECT_NAME}"
+elif [ -d "${PROJECTS}/${NAMESPACE}/$PROJECT_NAME" ]; then
+    e_info "Found project at ${HOME}/${NAMESPACE}/$PROJECT_NAME"
+    WORKINGDIR="${PROJECTS}/${NAMESPACE}/$PROJECT_NAME"
+else
+    e_info "Using directory: ${WORKINGDIR:A:t}"
+fi
+
+# Expand possible ~ in variable if user pass --pwd option
+WORKINGDIR="${WORKINGDIR/#\~/$HOME}"
+
+
+if _should ${_editor_only:-"no"}; then
+    command $EDITOR $WORKINGDIR
+    exit 0
+fi
+
+if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
     twidth=$(tput cols)
     theight=$(tput lines)
 
@@ -201,27 +233,6 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
         theight=$(tmux display-message -p '#{window_height}')
     fi
 
-    if [[ "$SESSION" == 'dotfiles' && -d "$HOME/.dotfiles" ]]; then
-        e_info "Using dotfiles settings"
-        WORKINGDIR="${HOME}/.dotfiles"
-    elif [[ "$SESSION" == 'nvim' && -d "$XDG_CONFIG_HOME/nvim" ]]; then
-        e_info "Using nvim settings"
-        WORKINGDIR="${XDG_CONFIG_HOME}/nvim"
-    elif [[ "$SESSION" == 'zsh' && -d "$ZDOTDIR" ]]; then
-        e_info "Using zsh settings"
-        WORKINGDIR="${ZDOTDIR}"
-    elif [ -d "${PROJECTS}/forks/${NAMESPACE}/${PROJECT_NAME}" ]; then
-        e_info "Found fork at ${PROJECTS}/forks/${NAMESPACE}/${PROJECT_NAME}"
-        WORKINGDIR="${PROJECTS}/forks/${NAMESPACE}/${PROJECT_NAME}"
-    elif [ -d "${PROJECTS}/${NAMESPACE}/$PROJECT_NAME" ]; then
-        e_info "Found project at ${HOME}/${NAMESPACE}/$PROJECT_NAME"
-        WORKINGDIR="${PROJECTS}/${NAMESPACE}/$PROJECT_NAME"
-    else
-        e_info "Using directory: ${WORKINGDIR:A:t}"
-    fi
-
-    # Expand possible ~ in variable if user pass --pwd option
-    WORKINGDIR="${WORKINGDIR/#\~/$HOME}"
 
     tmux new-session -s "$SESSION" -n editor -d -c $WORKINGDIR -x $twidth -y $theight
     if [[ -x "${WORKINGDIR}/.mx-start" ]]; then

@@ -23,6 +23,7 @@ args=(
     "--kill-current-session[Kill current session and move to the new one]"
     "--no-focus[Do not attach/switch to session]"
     "--pwd=[Specify the folder to be used for the session]: :_files -/"
+    "--editor-only[Open the project in $EDITOR instead of tmux]"
     # command arguments
     "(-): :->namespace-or-external"
     "(-)*:: :->project-or-options"

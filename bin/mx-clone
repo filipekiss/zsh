@@ -22,7 +22,7 @@ _parse_arguments() {
             ;;
         *)
             arg_idx=$((arg_idx + 1))
-            [[ $arg_idx -eq 1 ]] && _namespace="${arg}"
+            [[ $arg_idx -eq 1 ]] && _namespace_or_url="${arg}"
             [[ $arg_idx -eq 2 ]] && _project_name="${arg}"
 						[[ $arg_idx -eq 3 ]] && _repository_url="${arg}"
             ;;
@@ -50,10 +50,18 @@ __usage() {
   local reason;
   reason="${1:-}"
   case "$reason" in
+		url)
+			e_error "Tried to guess repository from ${_namespace_or_url} but the URL seems invalid."
+			;;
     namespace|project) 
+      e_error "Error: $reason is empty"
       echo "USAGE: mx clone namespace project [url]"
-      echo "Error: $reason is empty"
     ;;
+		projects_variable)
+      e_info 'mx-clone requires the $PROJECT variable to be set'
+      e_line 'The variable should point to where the PROJECTS will be cloned:'
+      e_line 'export PROJECTS="${HOME}/projects"'
+			;;
     *)
       echo "USAGE: mx clone namespace project [url]"
     ;;
@@ -65,20 +73,108 @@ _build_github_url() {
 	local org="$1"
 	local repo="$2"
 	[[ -z $org || -z $repo ]] && return 1
-	_repository_url="https://github.com/${org}/${repo}"
+	_repository_url="git@github.com:${org}/${repo}"
+}
+
+_parse_domain_from_url() {
+  local url=$1
+
+  # Check if the URL starts with "https://", "http://", or "git@"
+  if [[ $url == https://* || $url == http://* ]]; then
+    # Remove "https://" or "http://" from the beginning of the URL
+    local stripped_url=${url#*//}
+  else
+    # Remove "git@" from the beginning of the URL
+    local stripped_url=${url#*@}
+    # Extract the domain (everything between '@' and ':')
+    local domain=${stripped_url%%:*}
+    echo $domain
+    return
+  fi
+
+  # Extract the domain (everything between the first '/' and the next '/')
+  local domain=${stripped_url%%/*}
+
+  echo $domain
+}
+
+_parse_namespace_from_url() {
+  local url=$1
+	local domain=${2:-github.com}
+
+  # Remove "https://" or "git@" from the beginning of the URL
+  local stripped_url=${url#*${domain}/}
+
+  # Check if the URL format is git@github.com:<namespace>/<project>
+  if [[ $stripped_url == *":"* ]]; then
+    # Remove the namespace part from the URL (including ':')
+    local stripped_namespace=${stripped_url#*:}
+    
+    # Extract the namespace (everything before '/')
+    local namespace=${stripped_namespace%%/*}
+  else
+    # Extract the namespace (everything before '/')
+    local namespace=${stripped_url%%/*}
+  fi
+
+  echo $namespace
+}
+
+_parse_project_from_url() {
+  local url=$1
+
+	local domain=${2:-github.com}
+
+  # Remove "https://" or "git@" from the beginning of the URL
+  local stripped_url=${url#*${domain}/}
+  # Remove "https://" or "git@" from the beginning of the URL
+  local stripped_url=${url#*github.com/}
+
+  # Check if the URL format is git@github.com:<namespace>/<project>
+  if [[ $stripped_url == *":"* ]]; then
+    # Remove the namespace part from the URL (including ':')
+    local stripped_namespace=${stripped_url#*:}
+  else
+    # Remove the namespace part from the URL
+    local stripped_namespace=${stripped_url#*/}
+  fi
+
+  # Remove the ".git" extension from the project name if present
+  local project=${stripped_namespace%%.git*}
+
+  # Remove the namespace part from the project name if present
+  project=${project##*/}
+
+  echo $project
 }
 
 _mx_clone() {
     if [[ -z "${PROJECTS:-}" ]]; then
-      e_info 'mx-clone requires the $PROJECT variable to be set'
-      e_line 'The variable should point to where the PROJECTS will be cloned:'
-      e_line 'export PROJECTS="${HOME}/projects"'
-      exit 1
+			__usage "projects_variable"
+			exit 1
     fi
 		_parse_arguments "$@"
     local namespace project
-    namespace="${_namespace}"
-    project="${_project_name}"
+		# test
+		# {{{
+		#
+		## Function to extract namespace from a GitHub URL
+# }}}
+		# end test
+		if [[ -n "${_namespace_or_url}" && -z "${_project_name}" && -z "${_repository_url}" ]]; then
+			local _domain=$(_parse_domain_from_url ${_namespace_or_url})
+			local _namespace=$(_parse_namespace_from_url ${_namespace_or_url} ${_domain})
+			local _project=$(_parse_project_from_url ${_namespace_or_url} ${_domain})
+			if [[ -z ${_domain} || -z ${_namespace} || -z ${_project} ]]; then
+				__usage "url"
+				exit 1
+			fi
+			namespace=$_namespace
+			project=$_project
+			_repository_url=$_namespace_or_url
+		fi
+    namespace="${namespace:-${_namespace}}"
+    project="${project:-${_project_name}}"
     if [[ -z ${namespace} ]]; then
       __usage "namespace"
       exit 1
@@ -87,7 +183,7 @@ _mx_clone() {
       __usage "project"
       exit 1
     fi
-    
+
     if [ -d "${PROJECTS}/${namespace}/${project}" ]; then
       e_error "Project already exists, refusing to clone"
 			e_line "Use ${BLUE}mx ${namespace} ${project}$RESET to open it"

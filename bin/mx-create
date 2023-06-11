@@ -83,7 +83,7 @@ _mx_create() {
       command mkdir -p ${PROJECTS}/${namespace}/${project}
     fi
 
-    exec "mx" "$namespace" "$project"
+    exec "mx" "$@"
 }
 
 _mx_create "$@"

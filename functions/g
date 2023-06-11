@@ -1,6 +1,14 @@
 #  vim: set ts=4 sw=4 tw=80 ft=zsh et :
 # Alias git to g
 
+assumed_files_info() {
+    local GIT_ASSUMED_FILES_COUNT=$(git ls-files -v | grep '^h' | wc -l)
+    # show a little prompt at the end if we have files assumed unchanged
+    if [[ ${GIT_ASSUMED_FILES_COUNT} -gt 0 ]]; then
+        e_info "${GIT_ASSUMED_FILES_COUNT}"
+    fi
+}
+
 last_commit_info() {
     local GIT_INFO_MESSAGE GIT_INFO_HASH GIT_INFO_TIME COLS
     COLS=$(tput cols)
@@ -26,6 +34,7 @@ if [[ $# -eq 0 ]]; then
     else
         ${aliases[git]:-git} status --short --branch 2>/dev/null || e_header "Not in a git repository"
     fi
+    assumed_files_info
 else
     ${aliases[git]:-git} "$@"
 fi
