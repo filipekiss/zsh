@@ -2,6 +2,7 @@
 # │ Environment configuration │
 # └───────────────────────────┘
 export ZDOTDIR="${${(%):-%N}:A:h}"
+export LOCAL_ZDOTDIR="${HOME}/.local/zdotdir"
 export ZDOTPLUGINS="${ZDOTDIR:-$HOME}/plugins"
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}

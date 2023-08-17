@@ -35,4 +35,9 @@
 
   # zcompile autoloaded functions
   zrecompile -pq ${ZDOTDIR:-$HOME}/functions/functions.zwc ${ZDOTDIR:-$HOME}/functions/^(*.*)(-.N)
+
+  # zcompile local functions
+  if [[ -n ${LOCAL_ZDOTDIR:-} ]]; then
+  zrecompile -pq ${ZDOTDIR}/functions/functions.zwc ${ZDOTDIR}/functions/^(*.*)(-.N)
+  fi
 ) &!

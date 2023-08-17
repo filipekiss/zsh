@@ -15,6 +15,8 @@
 typeset -gU cdpath fpath manpath path
 
 fpath=(
+    ${HOME}/.local/zdotdir/functions.zwc(N-)
+    ${HOME}/.local/zdotdir/functions(N-/)
     ${ZDOTDIR:-$HOME}/functions/functions.zwc(N-)
     ${ZDOTDIR:-$HOME}/completion/completion.zwc(N-)
     ${ZDOTDIR:-$HOME}/functions(N-/)
