@@ -31,6 +31,7 @@ export OSTYPE=$(uname -s)
 export HOSTNAME=$(hostname)
 export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
+export BUN_INSTALL="$HOME/.bun"
 
 
 # ┌──────────────────┐

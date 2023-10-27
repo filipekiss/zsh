@@ -49,6 +49,7 @@ manpath=(
 path=(
     ./bin(N-/)
     ./node_modules/.bin
+    ${BUN_INSTALL:-"${HOME}/.bun"}/bin(N-/)
     ${ZDOTDIR}/bin(N-/)
     ${HOME}/.bin/local(N-/)
     ${HOME}/.bin(N-/)
