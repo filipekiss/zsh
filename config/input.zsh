@@ -45,8 +45,7 @@ key_info=(
 # Bind the keys
 
 # Vim mode
-# bindkey -v
-bindkey -e
+bindkey -v
 
 bindkey '^P' up-history
 bindkey '^N' down-history
@@ -83,6 +82,7 @@ function nvr-edit-command-line() {
 }
 zle -N nvr-edit-command-line
 bindkey -M vicmd '!'  nvr-edit-command-line
+bindkey "^X^E" nvr-edit-command-line
 
 # Automatically expand .... to ../..
 double-dot-expand() {
