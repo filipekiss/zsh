@@ -33,6 +33,14 @@ if (( $+commands[hub] )); then
     alias git=hub
 fi
 
+# ┌───────────────────────┐
+# │ Joshuto file explorer │
+# └───────────────────────┘
+if (( $+commands[joshuto] )); then
+  unalias js 2>/dev/null
+  alias js=joshuto
+fi
+
 # ┌───────────────┐
 # │ File Download │
 # └───────────────┘
