@@ -29,12 +29,24 @@ mx_kill() {
         exit 0
     fi
     SESSION="$1"
+    PROJECT="$2"
+    
+
+if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
+    if [ -z ${PROJECT:-} ]; then
+    echo "No session named ${SESSION}"
+    exit 1
+    fi
+    mx "$SESSION" "$PROJECT"
+    exit $?
+else
     if [ -z "$TMUX" ]; then
         tmux attach -t "$SESSION"
     else
         tmux switch-client -t "$SESSION"
         [[ -z $2 ]] && tmux kill-session
     fi
+fi
 }
 
 mx_kill "$@"

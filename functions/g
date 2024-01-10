@@ -10,7 +10,7 @@ assumed_files_info() {
 }
 
 last_commit_info() {
-    local GIT_INFO_MESSAGE GIT_INFO_HASH GIT_INFO_TIME COLS
+    local GIT_INFO_MESSAGE GIT_INFO_TIME COLS
     COLS=$(tput cols)
     if [[ $COLS -gt 80 ]]; then
         COLS=72

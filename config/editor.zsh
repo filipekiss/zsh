@@ -11,9 +11,9 @@ else
     (( $+commands[nvim] )) && export EDITOR=nvim || export EDITOR=vim
 fi
 
-export VISUAL=$EDITOR
 export NOTES_EDITOR=$EDITOR
 [[ -z $GIT_EDITOR ]] && export GIT_EDITOR=$EDITOR
+export VISUAL=$GIT_EDITOR
 
 # Set less or more as the default pager.
 if (( ${+commands[less]} )); then

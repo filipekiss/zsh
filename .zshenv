@@ -40,6 +40,12 @@ export BUN_INSTALL="$HOME/.bun"
 export FULLNAME="Filipe Kiss"
 export GITHUB_USERNAME="filipekiss"
 
+# ┌─────────────────────────┐
+# │ iTerm2 TMUX Integration │
+# └─────────────────────────┘
+[[ -n $TMUX ]] && export MX_DEFAULT_ARGS="--control"
+
+
 # ┌─────────────────────────────────┐
 # │ Load .zshenv.local if it exists │
 # └─────────────────────────────────┘

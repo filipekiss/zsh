@@ -24,6 +24,7 @@ args=(
     "--no-focus[Do not attach/switch to session]"
     "--pwd=[Specify the folder to be used for the session]: :_files -/"
     "--editor-only[Open the project in $EDITOR instead of tmux]"
+    "--control[Open tmux in control mode (pass -CC)]"
     # command arguments
     "(-): :->namespace-or-external"
     "(-)*:: :->project-or-options"
@@ -129,7 +130,7 @@ __fzf_complete_mx_project(){
 
 _list_available_sessions() {
     _description=()
-    tmux has-session 2>/dev/null
+    tmux has-session &>/dev/null
     _is_tmux_running=$?
     if [[ ${_is_tmux_running:-1} == 1 ]]; then
         return

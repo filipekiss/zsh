@@ -148,3 +148,9 @@ if [[ -f ${HOME}/.zshrc.local ]]; then
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# bun completions
+[ -s "/Users/filipekiss/.bun/_bun" ] && source "/Users/filipekiss/.bun/_bun"
+
+test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true
+

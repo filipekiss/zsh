@@ -111,6 +111,9 @@ _parse_arguments() {
             _pwd=$2
             shift
             ;;
+        --control)
+            _control="-CC"
+            ;;
         -)
             _namespace="-"
             ;;
@@ -139,6 +142,7 @@ _try_mx_command() {
     fi
 }
 
+[[ -n ${MX_DEFAULT_ARGS:-} ]] && _parse_arguments "$MX_DEFAULT_ARGS"
 _parse_arguments "$@"
 
 _use_default_session_name() {
@@ -164,11 +168,8 @@ else
 fi
 
 if [[ ${_namespace} == "-" ]]; then
-    if [ -z "$TMUX" ]; then
-        tmux attach
-    else
-        tmux switch-client -l
-    fi
+    echo "mx doesn't support -"
+    exit 127
 fi
 
 
@@ -233,7 +234,6 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
         theight=$(tmux display-message -p '#{window_height}')
     fi
 
-
     tmux new-session -s "$SESSION" -n editor -d -c $WORKINGDIR -x $twidth -y $theight
     if [[ -x "${WORKINGDIR}/.mx-start" ]]; then
         tmux send-keys -t "$SESSION" "./.mx-start" C-m
@@ -244,7 +244,7 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
         # If the total width is larger than 200, set the right column to be 80 columns and the left
         # column will take as many columns as possible
         if [[ $twidth -ge 200 ]]; then
-            MX_SPLIT_ARGS="-h -l 80"
+            MX_SPLIT_ARGS="-l 80 -h"
         elif [[ $twidth -ge 120 ]]; then
             MX_SPLIT_ARGS="-h -l 50%"
         fi
@@ -254,11 +254,14 @@ if ! (tmux has-session -t "${SESSION}" >/dev/null 2>&1); then
             tmux send-keys -t  "$SESSION" "tmux split-window ${MX_SPLIT_ARGS} -t '$SESSION' -c '$WORKINGDIR' -d" C-m
         fi
         tmux send-keys -t "$SESSION" "e" C-m
-        tmux new-window -d -n 'shell' -t "$SESSION" -c $WORKINGDIR
 
-        if _should_focus_new_session; then
-            tmux select-window -t 1
-            tmux select-pane -t 1
+        if [[ ${_control:-"no"} == "no" ]]; then
+            tmux new-window -d -n 'shell' -t "$SESSION" -c $WORKINGDIR
+
+            if _should_focus_new_session; then
+                tmux select-window -t 1
+                tmux select-pane -t 1
+            fi
         fi
     fi
 fi
@@ -276,7 +279,7 @@ fi
 
 
 if [ -z "$TMUX" ]; then
-    tmux attach -t "$SESSION"
+    tmux ${MX_TMUX_ATTACH_ARGS} ${_control:-} attach -t "$SESSION"
 else
-    tmux switch-client -t "$SESSION"
+    tmux ${_control:-} switch-client -t "$SESSION"
 fi

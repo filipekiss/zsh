@@ -155,12 +155,6 @@ _mx_clone() {
     fi
 		_parse_arguments "$@"
     local namespace project
-		# test
-		# {{{
-		#
-		## Function to extract namespace from a GitHub URL
-# }}}
-		# end test
 		if [[ -n "${_namespace_or_url}" && -z "${_project_name}" && -z "${_repository_url}" ]]; then
 			local _domain=$(_parse_domain_from_url ${_namespace_or_url})
 			local _namespace=$(_parse_namespace_from_url ${_namespace_or_url} ${_domain})
@@ -173,7 +167,7 @@ _mx_clone() {
 			project=$_project
 			_repository_url=$_namespace_or_url
 		fi
-    namespace="${namespace:-${_namespace}}"
+    namespace="${namespace:-${_namespace_or_url}}"
     project="${project:-${_project_name}}"
     if [[ -z ${namespace} ]]; then
       __usage "namespace"
