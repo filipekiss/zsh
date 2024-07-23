@@ -13,3 +13,4 @@ compdef '_files' transfer
 (( $+functions[_youtube-dl] )) && compdef yt2mp3=youtube-dl
 (( $+commands[mx] )) && compdef '_mx' mx
 (( $+commands[op] )) && eval "$(op completion zsh)" && compdef _op op
+(( $+functions[_chezmoi] )) && compdef cz=chezmoi

@@ -195,7 +195,17 @@ fi
 
 WORKINGDIR="${_pwd:-$PWD}"
 
-if [[ "$SESSION" == 'dotfiles' && -d "$HOME/.dotfiles" ]]; then
+# If chezmoi is available, use chezmoi as dotfiles, otherwise use
+# $HOME/.dotfiles folder
+if command -v chezmoi &> /dev/null; then
+    has_chezmoi=0
+else
+    has_chezmoi=1
+fi
+if [[ "$SESSION" == 'dotfiles' && has_chezmoi -eq 0 ]]; then
+    e_info "Using chezmoi dotfiles"
+    WORKINGDIR=$(chezmoi source-path)
+elif [[ "$SESSION" == 'dotfiles' && -d "$HOME/.dotfiles" ]]; then
     e_info "Using dotfiles settings"
     WORKINGDIR="${HOME}/.dotfiles"
 elif [[ "$SESSION" == 'nvim' && -d "$XDG_CONFIG_HOME/nvim" ]]; then

@@ -107,3 +107,8 @@ alias flushcache="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
 # │ Lazygit │
 # └─────────┘
 (( $+commands[lazygit] )) && alias lg=lazygit
+
+# ┌─────────┐
+# │ Chezmoi │
+# └─────────┘
+(( $+commands[chezmoi] )) && alias cz=chezmoi
