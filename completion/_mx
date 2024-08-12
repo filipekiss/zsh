@@ -74,7 +74,7 @@ __mx_namespace() {
     local namespaces _description
     _description=()
     [[ -n $DOTFILES ]] && _description=("dotfiles:$DOTFILES") || typeset -a _description
-    _description+=($(_list_available_namespaces))
+    _description+=($(_list_available_namespaces $words[2]))
     _describe -t namespace "Namespaces" _description && ret=0
     return $ret
 }
@@ -148,10 +148,14 @@ _list_available_sessions() {
 
 _list_available_namespaces() {
     local home_namespaces project_namespaces _description
+    _folder="$1"
     _description=()
     [[ -z $PROJECTS ]] && PROJECTS=$HOME
 
     if [[ -n $PROJECTS ]]; then
+        if [[ -n $_folder ]]; then
+        home_filtered_namespaces=($(find ${HOME}/${_folder}* -maxdepth 0 -type d -not -path '*/\.*' -not -iwholename '*/forks' -printf '%f\n'))
+        fi
         project_namespaces=($(find ${PROJECTS}/* -maxdepth 0 -type d -not -path '*/\.*' -not -iwholename '*/forks' -printf '%f\n'))
         if [[ -d "${PROJECTS}/forks" ]]; then
             [[ -n $project_namespaces ]] && _excluded_from_forks="-not -iwholename '*/${(j:' -not -iwholename '*\/:)project_namespaces}'"
@@ -159,6 +163,9 @@ _list_available_namespaces() {
         fi
         for namespace in $project_namespaces; do
             _description+=("${namespace}:${PROJECTS}/${namespace}")
+        done;
+        for namespace in $home_filtered_namespaces; do
+            _description+=("${namespace}:${HOME}/${namespace}")
         done;
         for namespace in $forks_namespaces; do
             _description+=("${namespace}:${PROJECTS}/forks/${namespace}")
@@ -177,6 +184,9 @@ _list_available_projects() {
     fi
     if [[ -d ${PROJECTS}/forks/${_selected_namespace} ]]; then
         _projects_available+=($(find ${PROJECTS}/forks/${_selected_namespace}/* -maxdepth 0 -type d))
+    fi
+    if [[ -d ${HOME}/${_selected_namespace} ]]; then
+        _projects_available+=($(find ${HOME}/${_selected_namespace}/* -maxdepth 0 -type d))
     fi
     for project in $_projects_available; do
         _session_description="${project/#${HOME}/~}"
